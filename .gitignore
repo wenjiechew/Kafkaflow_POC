@@ -13,8 +13,13 @@
 /Producer/.DS_Store
 /Producer/Producer.csproj.user
 
+/SharedLibrary/obj/
+/SharedLibrary/bin/
+
 .git/
 .idea/
 .DS_Store
 KafkaflowPOC.sln.DotSettings.user
-/Consumer.Infrastructure/obj
+
+
+
