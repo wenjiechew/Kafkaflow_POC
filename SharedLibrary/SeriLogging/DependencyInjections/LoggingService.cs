@@ -2,28 +2,30 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using SharedLibrary.Core.Entities.Logging;
+using SharedLibrary.SeriLogging.Configurations;
 
-namespace SharedLibrary.Configurations;
+namespace SharedLibrary.SeriLogging.DependencyInjections;
 
-public static class LoggingConfiguration
+public static class LoggingService
 {
     public static void Configure(LoggerConfiguration loggingConfiguration, IHostEnvironment environment, IConfiguration config)
     {
-        loggingConfiguration.Enrich.FromLogContext();
+        loggingConfiguration
+            .Enrich.FromLogContext()
+            .WriteTo.Console();
+        
         
         if (environment.IsDevelopment())
         {
-            var fileSinkConfig = config.GetSection("FileSinkOptions").Get<SerilogOptions.FileSinkOptions>();
+            var fileSinkConfig = config.GetSection("FileSinkOptions").Get<SerilogConfiguration.FileSinkOptions>();
             if (fileSinkConfig != null)
                 loggingConfiguration
                     .WriteTo.File(
                         path: fileSinkConfig.FilePath,
                         rollingInterval: RollingInterval.Day,
                         retainedFileCountLimit: fileSinkConfig.RetainedFileCountLimit,
-                        outputTemplate: fileSinkConfig.OutputTemplate)
-                    .Filter
-                    .ByExcluding(IsHealthCheckLogEvent);
+                        outputTemplate: fileSinkConfig.OutputTemplate);
+
             else
             {
                 loggingConfiguration
@@ -36,10 +38,7 @@ public static class LoggingConfiguration
         }
     }
     
-    private static bool IsHealthCheckLogEvent(LogEvent logEvent)
-    {
-        return logEvent.Properties.Any(kvp => kvp.Value.ToString().Equals("\"/health\""));
-    }
+
     
 
 }

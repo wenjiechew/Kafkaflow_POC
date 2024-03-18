@@ -1,4 +1,8 @@
-﻿
+﻿using Consumer.Applications;
+using KafkaFlow;
+using SharedLibrary.KafkaFlow.DependencyInjections;
+using SharedLibrary.KafkaFlow.SharedMiddlewares;
+
 namespace Consumer;
 public class Startup
 {
@@ -17,8 +21,18 @@ public class Startup
         services.AddControllers();
         services.AddHealthChecks();
 
+        services.AddKafkaConsumer(Configuration,
+            middlewareBuilder =>
+            {
+                middlewareBuilder.Add<WorkerIdLoggingMiddleware>();
+            }, 
+            typedHandlerBuilder =>
+            {
+                typedHandlerBuilder.AddHandler<HelloMessageHandler>();
+            });
+        
     }
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
     {
         app.UseRouting();
         app.UseAuthorization();
@@ -27,6 +41,9 @@ public class Startup
             endpoints.MapControllers();
             endpoints.MapHealthChecks("/health");
         });
+
+        var kafkabus = app.ApplicationServices.CreateKafkaBus();
+        lifetime.ApplicationStarted.Register(() => kafkabus.StartAsync(lifetime.ApplicationStopping));
     }
 
 

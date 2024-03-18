@@ -1,4 +1,10 @@
-﻿namespace Producer;
+﻿using KafkaFlow;
+using KafkaFlow.Serializer;
+using Producer.Applications;
+using SharedLibrary.KafkaFlow.DependencyInjections;
+using SharedLibrary.KafkaFlow.SharedMiddlewares;
+
+namespace Producer;
 
 public class Startup
 {
@@ -11,18 +17,33 @@ public class Startup
         Environment = environment;
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        app.UseRouting();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-            endpoints.MapGet("/", () => "Hello World!");
-        });
-    }
-
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
+        services.AddHealthChecks();
+
+        // TODO 
+        // what is the best way to name the producer?
+        var serviceName = Environment.ApplicationName;
+
+        services.AddKafkaProducer(Environment, Configuration,
+            middlewareBuilder =>
+            {
+                middlewareBuilder.Add<CorrelationIIdLoggingMiddleware>();
+            });
+        
+
+        
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.UseRouting();
+        app.UseAuthorization();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapHealthChecks("/health");
+        });
     }
 }

@@ -1,5 +1,5 @@
 using Serilog;
-using SharedLibrary.Configurations;
+using SharedLibrary.SeriLogging.DependencyInjections;
 
 namespace Consumer;
 
@@ -15,7 +15,7 @@ public static class Program
         try
         {
             Log.Information("Starting Consumer...");
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().RunAsync();
             Log.Information("Application started successfully");
             
             return 0;
@@ -34,7 +34,8 @@ public static class Program
     static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
             .UseSerilog((hostContext, loggerConfiguration) =>
-                LoggingConfiguration.Configure(loggerConfiguration, hostContext.HostingEnvironment, hostContext.Configuration))
+                loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration))
+                //LoggingService.Configure(loggerConfiguration, hostContext.HostingEnvironment, hostContext.Configuration))
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
