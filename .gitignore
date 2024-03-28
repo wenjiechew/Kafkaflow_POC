@@ -24,3 +24,5 @@ KafkaflowPOC.sln.DotSettings.user
 
 
 /.vs
+*.props
+/SharedLibrary/obj
