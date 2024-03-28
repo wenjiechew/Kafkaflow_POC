@@ -1,4 +1,4 @@
-namespace SharedLibrary.Core.Contracts;
+namespace SharedLibrary.Core.Abstractions;
 
 public record HelloId(Guid Value)
 {
