@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SharedLibrary
-build_property.ProjectDir = /Users/wenjie/Documents/CodeSpace/Learning/KafkaFlow_POC/SharedLibrary/
+build_property.ProjectDir = D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

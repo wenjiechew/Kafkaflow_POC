@@ -2,7 +2,7 @@
 using KafkaFlow.Producers;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.Core.Constants;
-using SharedLibrary.Core.Contracts;
+using SharedLibrary.Core.Contracts.Hello;
 using System.Text;
 
 namespace Producer.Controllers;

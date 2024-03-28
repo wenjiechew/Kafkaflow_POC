@@ -1,7 +1,4 @@
 using Serilog;
-using SharedLibrary;
-using SharedLibrary.Core.Contracts;
-using SharedLibrary.SeriLogging.DependencyInjections;
 
 namespace Producer;
 

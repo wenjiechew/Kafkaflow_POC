@@ -24,3 +24,16 @@
 /Users/wenjie/Documents/CodeSpace/Learning/KafkaFlow_POC/SharedLibrary/obj/Debug/net8.0/refint/SharedLibrary.dll
 /Users/wenjie/Documents/CodeSpace/Learning/KafkaFlow_POC/SharedLibrary/obj/Debug/net8.0/SharedLibrary.pdb
 /Users/wenjie/Documents/CodeSpace/Learning/KafkaFlow_POC/SharedLibrary/obj/Debug/net8.0/ref/SharedLibrary.dll
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.csproj.AssemblyReference.cache
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.GeneratedMSBuildEditorConfig.editorconfig
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.AssemblyInfoInputs.cache
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.AssemblyInfo.cs
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.csproj.CoreCompileInputs.cache
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.sourcelink.json
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.dll
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\refint\SharedLibrary.dll
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\SharedLibrary.pdb
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\bin\Debug\net8.0\SharedLibrary.deps.json
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\bin\Debug\net8.0\SharedLibrary.dll
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\bin\Debug\net8.0\SharedLibrary.pdb
+D:\DROM\CodeWorkspace\TestEnv\Kafkaflow_BatchProcessing\SharedLibrary\obj\Debug\net8.0\ref\SharedLibrary.dll
