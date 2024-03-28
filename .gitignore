@@ -26,3 +26,7 @@ KafkaflowPOC.sln.DotSettings.user
 /.vs
 *.props
 /SharedLibrary/obj
+/SharedLibrary/obj
+/SharedLibrary/obj/Debug
+*.editorconfig
+SharedLibrary/obj/SharedLibrary.csproj.nuget.g.props

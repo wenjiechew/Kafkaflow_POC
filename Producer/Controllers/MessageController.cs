@@ -12,7 +12,7 @@ namespace Producer.Controllers;
 [ApiController]
 public class MessageController : ControllerBase
 {
-    private const string Topic = "_topic-1";
+    private const string Topic = "topic-1";
 
     private readonly IProducerAccessor _producers;
 
@@ -22,7 +22,7 @@ public class MessageController : ControllerBase
     {
         _producers = producers;
 
-        ProducerName = environment.ApplicationName + Topic;
+        ProducerName = $"{environment.ApplicationName}_{Topic}";
     }
 
     [HttpPost]
