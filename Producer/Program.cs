@@ -1,11 +1,7 @@
-using KafkaFlow.Producers;
-using Microsoft.Extensions.Hosting.Internal;
-using Producer.Applications;
 using Serilog;
 using SharedLibrary;
-using SharedLibrary.Core.Abstractions;
 using SharedLibrary.Core.Contracts;
-using SharedLibrary.Core.Contracts.Hello;
+using SharedLibrary.SeriLogging.DependencyInjections;
 
 namespace Producer;
 
@@ -21,18 +17,8 @@ public static class Program
         try
         {
             Log.Information("Starting Producer...");
-            var builder = CreateHostBuilder(args).Build();
+            await CreateHostBuilder(args).Build().RunAsync();
             Log.Information("Application started successfully");
-            
-            //Just testing purpose
-            var serviceName = builder.Services.GetRequiredService<IHostEnvironment>().ApplicationName;
-            var producer = builder.Services.GetRequiredService<IProducerAccessor>().GetProducer(serviceName);
-
-
-            await producer.ProduceAsync("topic-1", Guid.NewGuid().ToString(), new HelloMessage(HelloId.New) { Text = "Hello World" });
-            _ = builder.RunAsync();
-
-
 
             return 0;
         }
@@ -52,7 +38,7 @@ public static class Program
         Host.CreateDefaultBuilder(args)
             .UseSerilog((hostContext, loggerConfiguration) =>
                 loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration))
-                //LoggingService.Configure(loggerConfiguration, hostContext.HostingEnvironment, hostContext.Configuration))
+            //LoggingService.Configure(loggerConfiguration, hostContext.HostingEnvironment, hostContext.Configuration))
             .ConfigureWebHostDefaults(webBuilder =>
             {
 

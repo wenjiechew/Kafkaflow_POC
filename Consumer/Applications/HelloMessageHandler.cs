@@ -6,7 +6,7 @@ using SharedLibrary.SeriLogging.Extensions;
 
 namespace Consumer.Applications;
 
-public class HelloMessageHandler: IMessageHandler<HelloMessage>
+public class HelloMessageHandler : IMessageHandler<HelloMessage>
 {
     private readonly ILogger<HelloMessageHandler> _logger;
 

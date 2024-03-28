@@ -1,8 +1,6 @@
-﻿using KafkaFlow;
-using KafkaFlow.Serializer;
-using Producer.Applications;
+﻿using Microsoft.OpenApi.Models;
 using SharedLibrary.KafkaFlow.DependencyInjections;
-using SharedLibrary.KafkaFlow.SharedMiddlewares;
+using SharedLibrary.Middlewares;
 
 namespace Producer;
 
@@ -22,24 +20,36 @@ public class Startup
         services.AddControllers();
         services.AddHealthChecks();
 
-        // TODO 
-        // what is the best way to name the producer?
-        var serviceName = Environment.ApplicationName;
-
         services.AddKafkaProducer(Environment, Configuration,
             middlewareBuilder =>
             {
-                middlewareBuilder.Add<CorrelationIIdLoggingMiddleware>();
-            });
-        
 
-        
+            });
+
+        // Register the Swagger generator, defining one or more Swagger documents
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+        });
+
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Interface v1"));
+        }
+
+        app.UseMiddleware<CorrelationIdLoggingApiMiddleware>();
+        app.UseHttpsRedirection();
         app.UseRouting();
         app.UseAuthorization();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

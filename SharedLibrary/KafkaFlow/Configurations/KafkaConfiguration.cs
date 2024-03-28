@@ -5,8 +5,8 @@ public class KafkaConfiguration
     public class KafkaSettings
     {
         public string Brokers { get; set; }
-        public ConsumerSettings Consumer { get; set; } = new();
-        public ProducerSettings Producer { get; set; } = new();
+        public List<ConsumerSettings> Consumers { get; set; } = new();
+        public List<ProducerSettings> Producers { get; set; } = new();
     }
 
 }

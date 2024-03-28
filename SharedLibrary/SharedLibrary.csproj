@@ -24,24 +24,32 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configurations\" />
-    <Folder Include="Core\Entities\" />
-    <Folder Include="DependencyInjections\" />
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Remove="Configurations\**" />
+    <Compile Remove="Core\Entities\**" />
+    <Compile Remove="DependencyInjections\**" />
+    <Compile Remove="Helpers\**" />
     <Compile Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Configurations\**" />
+    <EmbeddedResource Remove="Core\Entities\**" />
+    <EmbeddedResource Remove="DependencyInjections\**" />
+    <EmbeddedResource Remove="Helpers\**" />
     <EmbeddedResource Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Configurations\**" />
+    <None Remove="Core\Entities\**" />
+    <None Remove="DependencyInjections\**" />
+    <None Remove="Helpers\**" />
     <None Remove="obj\**" />
   </ItemGroup>
 
