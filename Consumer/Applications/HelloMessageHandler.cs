@@ -4,7 +4,7 @@ using SharedLibrary.SeriLogging.Extensions;
 
 namespace Consumer.Applications;
 
-public class HelloMessageHandler: IMessageHandler<HelloMessage>
+public class HelloMessageHandler : IMessageHandler<HelloMessage>
 {
     private const string ClassName = nameof(HelloMessageHandler);
     private readonly ILogger<HelloMessageHandler> _logger;
@@ -16,7 +16,7 @@ public class HelloMessageHandler: IMessageHandler<HelloMessage>
 
     public Task Handle(IMessageContext context, HelloMessage message)
     {
-        _logger.LogInfo(ClassName, $"Partition: [{context.ConsumerContext.Partition}] | Offset: {context.ConsumerContext.Offset} | Message: {message.MessageId}{message.Text}");
+        _logger.LogInfo($"Partition: [{context.ConsumerContext.Partition}] | Offset: {context.ConsumerContext.Offset} | Message: {message.MessageId}{message.Text}");
 
         return Task.CompletedTask;
     }

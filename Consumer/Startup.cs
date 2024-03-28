@@ -1,7 +1,6 @@
 ﻿using Consumer.Applications;
 using KafkaFlow;
 using SharedLibrary.KafkaFlow.DependencyInjections;
-using SharedLibrary.KafkaFlow.SharedMiddlewares;
 
 namespace Consumer;
 public class Startup
@@ -24,13 +23,13 @@ public class Startup
         services.AddKafkaConsumer(Configuration,
             middlewareBuilder =>
             {
-                middlewareBuilder.Add<WorkerIdLoggingMiddleware>();
-            }, 
+
+            },
             typedHandlerBuilder =>
             {
                 typedHandlerBuilder.AddHandler<HelloMessageHandler>();
             });
-        
+
     }
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
     {

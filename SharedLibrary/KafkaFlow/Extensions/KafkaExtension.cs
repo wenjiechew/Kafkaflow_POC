@@ -17,4 +17,5 @@ public static class KafkaExtension
 
         return builder;
     }
+
 }
