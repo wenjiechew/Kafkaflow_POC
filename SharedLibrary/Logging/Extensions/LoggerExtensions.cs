@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 
-namespace SharedLibrary.SeriLogging.Extensions;
+namespace SharedLibrary.Logging.Extensions;
 
 public static class LoggerExtensions
 {

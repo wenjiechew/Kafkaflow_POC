@@ -1,8 +1,7 @@
 using KafkaFlow;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using Serilog.Context;
-using SharedLibrary.SeriLogging.Extensions;
+using SharedLibrary.Logging.Extensions;
 
 namespace SharedLibrary.KafkaFlow.SharedMiddlewares;
 
@@ -18,16 +17,10 @@ public sealed class WorkerIdLoggingMiddleware : IMessageMiddleware
     public async Task Invoke(IMessageContext context, MiddlewareDelegate next)
     {
         var workerId = context.ConsumerContext.WorkerId;
-        
+
         _logger.LogInfo($"Processing with WorkerId: {workerId}");
-        if (workerId > 0)
-        {
-            using (LogContext.PushProperty("WorkerId", workerId))
-            {
-                await next(context);
-            }
-        }
-        else
+
+        using (LogContext.PushProperty("WorkerId", workerId))
         {
             await next(context);
         }

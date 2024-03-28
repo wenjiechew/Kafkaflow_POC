@@ -2,6 +2,7 @@ using System.Text;
 using KafkaFlow;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
+using SharedLibrary.Logging.Extensions;
 using SharedLibrary.SeriLogging.Extensions;
 
 namespace SharedLibrary.KafkaFlow.SharedMiddlewares;

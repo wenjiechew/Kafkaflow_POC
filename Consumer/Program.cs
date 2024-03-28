@@ -1,5 +1,5 @@
+using KafkaFlow;
 using Serilog;
-using SharedLibrary.SeriLogging.DependencyInjections;
 
 namespace Consumer;
 
@@ -15,7 +15,8 @@ public static class Program
         try
         {
             Log.Information("Starting Consumer...");
-            CreateHostBuilder(args).Build().RunAsync();
+            CreateHostBuilder(args).Build().Run();
+
             Log.Information("Application started successfully");
             
             return 0;
@@ -27,6 +28,7 @@ public static class Program
         }
         finally
         {
+            
             Log.CloseAndFlush();
         }
     }

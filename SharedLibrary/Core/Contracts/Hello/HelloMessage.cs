@@ -1,6 +1,6 @@
 using SharedLibrary.Core.Abstractions;
 
-namespace SharedLibrary.Core.Contracts;
+namespace SharedLibrary.Core.Contracts.Hello;
 
 public class HelloMessage : Entity<HelloId>
 {

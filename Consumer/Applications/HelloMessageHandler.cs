@@ -1,12 +1,13 @@
 using KafkaFlow;
 using SharedLibrary.Core.Contracts;
+using SharedLibrary.Core.Contracts.Hello;
+using SharedLibrary.Logging.Extensions;
 using SharedLibrary.SeriLogging.Extensions;
 
 namespace Consumer.Applications;
 
 public class HelloMessageHandler: IMessageHandler<HelloMessage>
 {
-    private const string ClassName = nameof(HelloMessageHandler);
     private readonly ILogger<HelloMessageHandler> _logger;
 
     public HelloMessageHandler(ILogger<HelloMessageHandler> logger)
@@ -16,7 +17,7 @@ public class HelloMessageHandler: IMessageHandler<HelloMessage>
 
     public Task Handle(IMessageContext context, HelloMessage message)
     {
-        _logger.LogInfo(ClassName, $"Partition: [{context.ConsumerContext.Partition}] | Offset: {context.ConsumerContext.Offset} | Message: {message.MessageId}{message.Text}");
+        _logger.LogInfo($"Message: {message.MessageId} : {message.Text}");
 
         return Task.CompletedTask;
     }

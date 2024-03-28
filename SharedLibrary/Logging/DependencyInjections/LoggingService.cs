@@ -1,10 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Events;
 using SharedLibrary.SeriLogging.Configurations;
 
-namespace SharedLibrary.SeriLogging.DependencyInjections;
+namespace SharedLibrary.Logging.DependencyInjections;
 
 public static class LoggingService
 {

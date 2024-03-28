@@ -3,8 +3,9 @@ using Microsoft.Extensions.Hosting.Internal;
 using Producer.Applications;
 using Serilog;
 using SharedLibrary;
+using SharedLibrary.Core.Abstractions;
 using SharedLibrary.Core.Contracts;
-using SharedLibrary.SeriLogging.DependencyInjections;
+using SharedLibrary.Core.Contracts.Hello;
 
 namespace Producer;
 
@@ -27,11 +28,9 @@ public static class Program
             var serviceName = builder.Services.GetRequiredService<IHostEnvironment>().ApplicationName;
             var producer = builder.Services.GetRequiredService<IProducerAccessor>().GetProducer(serviceName);
 
-            _ = builder.RunAsync();
 
-            await Task.Delay(1000);
             await producer.ProduceAsync("topic-1", Guid.NewGuid().ToString(), new HelloMessage(HelloId.New) { Text = "Hello World" });
-
+            _ = builder.RunAsync();
 
 
 
