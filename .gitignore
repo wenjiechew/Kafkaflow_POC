@@ -23,3 +23,8 @@ KafkaflowPOC.sln.DotSettings.user
 
 
 
+/.vs
+/SharedLibrary/obj/Debug/net8.0/SharedLibrary.csproj.FileListAbsolute.txt
+/SharedLibrary/obj/SharedLibrary.csproj.nuget.g.targets
+/SharedLibrary/obj/Debug/net8.0/SharedLibrary.GeneratedMSBuildEditorConfig.editorconfig
+/SharedLibrary/obj/SharedLibrary.csproj.nuget.g.props
