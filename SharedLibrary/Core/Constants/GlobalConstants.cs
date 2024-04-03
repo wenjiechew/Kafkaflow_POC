@@ -1,6 +1,8 @@
 ﻿namespace SharedLibrary.Core.Constants;
 
-public class GlobalConstants
+public static class GlobalConstants
 {
+    public const string ApplicationNameHeader = "ApplicationName";
     public const string CorrelationIdHeader = "CorrelationId";
+    
 }

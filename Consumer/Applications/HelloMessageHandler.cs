@@ -1,8 +1,6 @@
 using KafkaFlow;
-using SharedLibrary.Core.Contracts;
 using SharedLibrary.Core.Contracts.Hello;
 using SharedLibrary.Logging.Extensions;
-using SharedLibrary.SeriLogging.Extensions;
 
 namespace Consumer.Applications;
 

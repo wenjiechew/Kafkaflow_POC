@@ -1,4 +1,5 @@
 using Serilog;
+using SharedLibrary.Logging.Extensions;
 
 namespace Producer;
 
@@ -34,8 +35,12 @@ public static class Program
     static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
             .UseSerilog((hostContext, loggerConfiguration) =>
-                loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration))
-            //LoggingService.Configure(loggerConfiguration, hostContext.HostingEnvironment, hostContext.Configuration))
+                loggerConfiguration
+                    .ReadFrom.Configuration(hostContext.Configuration)
+                    .Enrich
+                        .FromLogContext()
+                            .AddApplicationNameProperty(hostContext.Configuration, hostContext.HostingEnvironment)
+                )
             .ConfigureWebHostDefaults(webBuilder =>
             {
 

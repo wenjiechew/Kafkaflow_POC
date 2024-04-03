@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using SharedLibrary.KafkaFlow.Configurations.Producers;
 using SharedLibrary.KafkaFlow.DependencyInjections;
 using SharedLibrary.Middlewares;
 
@@ -20,11 +21,17 @@ public class Startup
         services.AddControllers();
         services.AddHealthChecks();
 
-        services.AddKafkaProducer(Environment, Configuration,
-            middlewareBuilder =>
+        var setups = new Dictionary<TargetProducer, ProducerSetup>
+        {
             {
+                new TargetProducer(1), new ProducerSetup
+                {
+                    ConfigureMiddlewares = middlewareBuilder => { }
 
-            });
+                }
+            }
+        };
+        services.AddKafkaProducer(Environment, Configuration, setups);
 
         // Register the Swagger generator, defining one or more Swagger documents
         services.AddSwaggerGen(c =>

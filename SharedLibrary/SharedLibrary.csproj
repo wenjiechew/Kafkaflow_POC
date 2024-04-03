@@ -53,4 +53,9 @@
     <None Remove="obj\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logging\Configurations\" />
+    <Folder Include="Logging\DependencyInjections\" />
+  </ItemGroup>
+
 </Project>

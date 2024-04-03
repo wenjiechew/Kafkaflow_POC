@@ -1,4 +1,4 @@
-namespace SharedLibrary.KafkaFlow.Configurations;
+namespace SharedLibrary.KafkaFlow.Configurations.Producers;
 
 public class ProducerSettings
 {
@@ -7,5 +7,7 @@ public class ProducerSettings
     public int Partitions { get; set; }
     public short ReplicationFactor { get; set; }
     public bool AutoCreateTopic { get; set; } = false;
+    
+    public int ProducerNo { get; set; }
 
 }

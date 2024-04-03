@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharedLibrary.KafkaFlow.Configurations;
+using SharedLibrary.KafkaFlow.Configurations.Consumers;
+using SharedLibrary.KafkaFlow.Configurations.Producers;
 using SharedLibrary.KafkaFlow.Extensions;
 using SharedLibrary.KafkaFlow.SharedMiddlewares;
 using KafkaConfiguration = SharedLibrary.KafkaFlow.Configurations.KafkaConfiguration;
@@ -22,8 +24,7 @@ public static class KafkaFlowService
 
 
     public static IServiceCollection AddKafkaConsumer(this IServiceCollection services, IConfiguration configuration,
-        Action<IConsumerMiddlewareConfigurationBuilder>? configureMiddlewares,
-        Action<TypedHandlerConfigurationBuilder>? configureHandlers)
+        Dictionary<TargetConsumer, ConsumerSetup> consumerSetups)
     {
         var kafkaSettings = configuration.GetSection("Kafka").Get<KafkaConfiguration.KafkaSettings>();
 
@@ -39,24 +40,26 @@ public static class KafkaFlowService
 
                         var consumerSettings = GetConsumerSettings(kafkaSettings);
 
-                        foreach (var consumerConfig in consumerSettings)
+                        foreach (var consumerSetting in consumerSettings)
                         {
                             cluster.AddConsumer(consumer =>
                             {
                                 consumer
-                                    .Topics(consumerConfig.Topics)
-                                    .WithGroupId(consumerConfig.GroupId)
-                                    .WithBufferSize(consumerConfig.BufferSize)
-                                    .WithWorkersCount(consumerConfig.WorkersCount)
-                                    .ConfigureDistributionStrategy(consumerConfig.DistributionStrategy);
+                                    .Topics(consumerSetting.Topics)
+                                    .WithGroupId(consumerSetting.GroupId)
+                                    .WithBufferSize(consumerSetting.BufferSize)
+                                    .WithWorkersCount(consumerSetting.WorkersCount)
+                                    .ConfigureDistributionStrategy(consumerSetting.DistributionStrategy);
 
+                                var consumerSetup = consumerSetups.FirstOrDefault(x => x.Key.ConsumerNo == consumerSetting.ConsumerNo).Value;
+                                
                                 consumer.AddMiddlewares(middleware =>
                                 {
-                                    AddDefaultMiddlewares(middleware, configureMiddlewares);
+                                    AddDefaultConsumerMiddlewares(middleware, consumerSetup!.ConfigureMiddlewares);
 
                                     middleware.AddTypedHandlers(typeHandlerBuilder =>
                                     {
-                                        configureHandlers?.Invoke(typeHandlerBuilder);
+                                        consumerSetup.ConfigureHandlers?.Invoke(typeHandlerBuilder);
                                     });
                                 });
                             });
@@ -68,17 +71,27 @@ public static class KafkaFlowService
     }
 
     // Encapsulate default middleware addition, including CorrelationIdLoggingMiddleware
-    private static void AddDefaultMiddlewares(IConsumerMiddlewareConfigurationBuilder middleware,
+    private static void AddDefaultConsumerMiddlewares(IConsumerMiddlewareConfigurationBuilder middleware,
         Action<IConsumerMiddlewareConfigurationBuilder>? configureMiddlewares)
     {
         middleware.Add<CorrelationIdLoggingKafkaFlowMiddleware>();
         middleware.Add<WorkerIdLoggingMiddleware>();
+        
         configureMiddlewares?.Invoke(middleware);
         middleware.AddDeserializer<JsonCoreDeserializer>();
     }
+    
+    private static void AddDefaultProducerMiddleware(IProducerMiddlewareConfigurationBuilder middleware,
+        Action<IProducerMiddlewareConfigurationBuilder>? configureMiddleware)
+    {
+        middleware.Add<CorrelationIdLoggingKafkaFlowMiddleware>();
+        
+        configureMiddleware?.Invoke(middleware);
+        middleware.AddSerializer<JsonCoreSerializer>();
+    }
 
     public static IServiceCollection AddKafkaProducer(this IServiceCollection services, IHostEnvironment environment, IConfiguration configuration,
-        Action<IProducerMiddlewareConfigurationBuilder>? configureMiddleware)
+        Dictionary<TargetProducer, ProducerSetup> producerSetups)
     {
         var kafkaSettings = configuration.GetSection("Kafka").Get<KafkaConfiguration.KafkaSettings>();
 
@@ -103,6 +116,8 @@ public static class KafkaFlowService
                                 cluster.CreateTopicIfNotExists(producerSetting.Topic, producerSetting.Partitions,
                                     producerSetting.ReplicationFactor);
                             }
+                            
+                            var producerSetup = producerSetups.FirstOrDefault(x => x.Key.ProducerNo == producerSetting.ProducerNo).Value;
 
                             cluster.AddProducer(
                                 serviceName,
@@ -112,11 +127,8 @@ public static class KafkaFlowService
                                         .DefaultTopic(producerSetting.Topic)
                                         .AddMiddlewares(middleware =>
                                         {
-                                            middleware.Add<CorrelationIdLoggingKafkaFlowMiddleware>();
-
-
-                                            middleware.AddSerializer<JsonCoreSerializer>();
-                                            configureMiddleware?.Invoke(middleware);
+                                            AddDefaultProducerMiddleware(middleware, producerSetup!.ConfigureMiddlewares);
+                                            
                                         });
                                 });
                         }

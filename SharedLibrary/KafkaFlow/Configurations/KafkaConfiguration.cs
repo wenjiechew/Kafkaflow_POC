@@ -1,3 +1,6 @@
+using SharedLibrary.KafkaFlow.Configurations.Consumers;
+using SharedLibrary.KafkaFlow.Configurations.Producers;
+
 namespace SharedLibrary.KafkaFlow.Configurations;
 
 public class KafkaConfiguration

@@ -1,5 +1,7 @@
 ﻿using Consumer.Applications;
 using KafkaFlow;
+using SharedLibrary.KafkaFlow.Configurations;
+using SharedLibrary.KafkaFlow.Configurations.Consumers;
 using SharedLibrary.KafkaFlow.DependencyInjections;
 
 namespace Consumer;
@@ -20,15 +22,19 @@ public class Startup
         services.AddControllers();
         services.AddHealthChecks();
 
-        services.AddKafkaConsumer(Configuration,
-            middlewareBuilder =>
+        var setups = new Dictionary<TargetConsumer, ConsumerSetup>
+        {
+            {new TargetConsumer(1), new ConsumerSetup
             {
-
-            },
-            typedHandlerBuilder =>
-            {
-                typedHandlerBuilder.AddHandler<HelloMessageHandler>();
-            });
+                ConfigureMiddlewares = middlewareBuilder => { },
+                ConfigureHandlers = typedHandlerBuilder =>
+                {
+                    typedHandlerBuilder.AddHandler<HelloMessageHandler>();
+                }
+            }}
+        };
+        
+        services.AddKafkaConsumer(Configuration, setups);
 
     }
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
@@ -41,8 +47,8 @@ public class Startup
             endpoints.MapHealthChecks("/health");
         });
 
-        var kafkabus = app.ApplicationServices.CreateKafkaBus();
-        lifetime.ApplicationStarted.Register(() => kafkabus.StartAsync(lifetime.ApplicationStopping));
+        var kafkaBus = app.ApplicationServices.CreateKafkaBus();
+        lifetime.ApplicationStarted.Register(() => kafkaBus.StartAsync(lifetime.ApplicationStopping));
     }
 
 

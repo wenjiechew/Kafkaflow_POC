@@ -1,32 +1,22 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Events;
-using SharedLibrary.SeriLogging.Configurations;
+using SharedLibrary.Core;
+using SharedLibrary.Core.Constants;
 
-namespace SharedLibrary.SeriLogging.Extensions;
+namespace SharedLibrary.Logging.Extensions;
 
 public static class SerilogOptionsExtension
 {
-    public static LoggerConfiguration ConfigureFileSink(this LoggerConfiguration loggerConfiguration, IConfigurationSection fileSinkConfigSection)
+    public static void AddApplicationNameProperty(this LoggerConfiguration loggerConfiguration, 
+        IConfiguration configuration,
+        IHostEnvironment environment)
     {
-        var fileSinkConfig = fileSinkConfigSection.Get<SerilogConfiguration.FileSinkOptions>();
-        if (fileSinkConfig != null)
-        {
-            loggerConfiguration
-                .WriteTo.File(
-                    path: fileSinkConfig.FilePath,
-                    rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: fileSinkConfig.RetainedFileCountLimit,
-                    outputTemplate: fileSinkConfig.OutputTemplate)
-                .Filter
-                .ByExcluding(IsHealthCheckLogEvent);
-        }
+        var environmentSetting = configuration.GetSection("EnvironmentSetup").Get<EnvironmentSetup>();
 
-        return loggerConfiguration;
-    }
-    
-    private static bool IsHealthCheckLogEvent(LogEvent logEvent)
-    {
-        return logEvent.Properties.Any(kvp => kvp.Value.ToString().Equals("\"/health\""));
+        loggerConfiguration.Enrich.WithProperty(GlobalConstants.ApplicationNameHeader,
+            environmentSetting != null
+                ? $"{environmentSetting.EnvZone}{environmentSetting.EnvTenant}{environmentSetting.EnvAppName}"
+                : environment.ApplicationName);
     }
 }
